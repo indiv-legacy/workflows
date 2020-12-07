@@ -1,0 +1,36 @@
+name: Canary Release
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  up:
+    name: Deploy to GCP
+    runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: "{{github.name}}"
+      ENVIRONMENT: dev
+      VERSION: v1
+      REGION: europe-north1
+      IMAGE_NAME: eu.gcr.io/indiv-app-dev/{{github.name}}:v1.$(git rev-parse --short=4 $\{{ github.sha }})
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+          
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: indiv-app-dev
+          service_account_key: $\{{ secrets.GCP_SERVICE_ACCOUNT_JSON }}
+          export_default_credentials: true
+
+      - run: docker build --build-arg NPM_TOKEN=$\{{ env.NPM_TOKEN }} . -t $\{{ env.IMAGE_NAME }}
+        env:
+          NPM_TOKEN: $\{{ secrets.GITHUB_TOKEN }}
+
+      - run: docker push $\{{ env.IMAGE_NAME }}
+      - run: gcloud run deploy $\{{ env.SERVICE_NAME }}-${{ env.VERSION }} --platform managed --image=$\{{ env.IMAGE_NAME }} --region $\{{ env.REGION }}

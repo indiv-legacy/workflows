@@ -1,0 +1,21 @@
+on:
+  push:
+    branches: [main]
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: bjerkio/kopier@main
+        with:
+          repos: |
+            indivorg/service-user
+            indivorg/service-plan
+            indivorg/service-bff
+            indivorg/service-journal
+            indivorg/service-program
+            indivorg/service-task
+          github-token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
