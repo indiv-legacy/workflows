@@ -1,10 +1,7 @@
 name: Canary Release
 on:
-  pull_request:
   push:
-    branches:
-      - main
-      - develop
+    branches: [$default-branch]
 
 jobs:
   up:
@@ -15,12 +12,13 @@ jobs:
       ENVIRONMENT: dev
       VERSION: v1
       REGION: europe-north1
-      IMAGE_NAME: eu.gcr.io/indiv-app-dev/{{github.name}}:v1.$(git rev-parse --short=4 $\{{ github.sha }})
+      IMAGE_NAME: eu.gcr.io/indiv-app-dev/{{github.name}}
+      V_TAG: v1.$(git rev-parse --short=4 $\{{ github.sha }})
     steps:
       - uses: actions/checkout@v1
         with:
           fetch-depth: 1
-          
+
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
@@ -30,9 +28,11 @@ jobs:
 
       - run: gcloud auth configure-docker
 
-      - run: docker build --build-arg NPM_TOKEN=$\{{ env.NPM_TOKEN }} . -t $\{{ env.IMAGE_NAME }}
+      - run: docker build --build-arg NPM_TOKEN=$\{{ env.NPM_TOKEN }} . -t $\{{ env.IMAGE_NAME }}:$\{{ env.V_TAG }}
         env:
           NPM_TOKEN: $\{{ secrets.GH_NPM_TOKEN }}
+
+      - run: docker tag $\{{ env.IMAGE_NAME }}:v$/{{ env.VERSION }}-dev
 
       - run: docker push $\{{ env.IMAGE_NAME }}
 
