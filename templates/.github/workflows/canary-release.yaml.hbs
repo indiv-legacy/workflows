@@ -28,6 +28,8 @@ jobs:
           service_account_key: $\{{ secrets.GCP_SERVICE_ACCOUNT_JSON }}
           export_default_credentials: true
 
+      - run: gcloud auth configure-docker
+
       - run: docker build --build-arg NPM_TOKEN=$\{{ env.NPM_TOKEN }} . -t $\{{ env.IMAGE_NAME }}
         env:
           NPM_TOKEN: $\{{ secrets.GH_NPM_TOKEN }}
