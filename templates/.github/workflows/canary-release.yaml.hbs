@@ -1,7 +1,9 @@
 name: Canary Release
 on:
   push:
-    branches: [$default-branch]
+    branches:
+      - main
+      - master
 
 jobs:
   up:

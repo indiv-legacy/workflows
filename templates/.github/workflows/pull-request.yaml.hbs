@@ -11,9 +11,7 @@ jobs:
         with:
           fetch-depth: 1
 
-      - uses: actions/setup-node@v1
-        with:
-          registry-url: "https://npm.pkg.github.com"
+      - run: "'//npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN' >> .npmrc"
 
       - run: yarn install
         env:
