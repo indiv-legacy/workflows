@@ -11,7 +11,7 @@ jobs:
         with:
           fetch-depth: 1
 
-      - run: "'//npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN' >> .npmrc"
+      - run: "echo '//npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN' >> .npmrc"
 
       - run: yarn install
         env:
