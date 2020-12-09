@@ -34,8 +34,8 @@ jobs:
         env:
           NPM_TOKEN: $\{{ secrets.GH_NPM_TOKEN }}
 
-      - run: docker tag $\{{ env.IMAGE_NAME }}:$\{{ env.V_TAG }} $\{{ env.IMAGE_NAME }}:v$\{{ env.VERSION }}-dev
+      - run: docker tag $\{{ env.IMAGE_NAME }}:$\{{ env.V_TAG }} $\{{ env.IMAGE_NAME }}:$\{{ env.VERSION }}-dev
 
       - run: docker push $\{{ env.IMAGE_NAME }}
 
-      - run: gcloud run deploy $\{{ env.SERVICE_NAME }}-dev-$\{{ env.VERSION }} --platform managed --image=$\{{ env.IMAGE_NAME }} --region $\{{ env.REGION }}
+      - run: gcloud run deploy $\{{ env.SERVICE_NAME }}-dev-$\{{ env.VERSION }} --platform managed --image=$\{{ env.IMAGE_NAME }}:$\{{ env.V_TAG }} --region $\{{ env.REGION }}
