@@ -11,15 +11,37 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SERVICE_NAME: "{{github.name}}"
-      ENVIRONMENT: dev
-      VERSION: v1
-      REGION: europe-north1
       IMAGE_NAME: eu.gcr.io/indiv-app-dev/{{github.name}}
-      V_TAG: v1.$(git rev-parse --short=4 $\{{ github.sha }})
     steps:
       - uses: actions/checkout@v1
         with:
           fetch-depth: 1
+
+      - name: nodejs project information
+        id: projectinfo
+        uses: gregoranders/nodejs-project-info@v0.0.11
+
+      - uses: apexskier/github-semver-parse@v1
+        id: semver
+        with:
+          version: $\{{ steps.projectinfo.outputs.VERSION }}
+
+      - name: Set the version
+        id: version
+        run: echo ::set-output name=VERSION::$\{{ steps.semver.outputs.major }}.$\{{ steps.semver.outputs.minor }}.$\{{ steps.semver.outputs.patch }}-canary.$(git rev-parse --short=4 $\{{ github.sha }})
+        shell: bash
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache
+        with:
+          path: $\{{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: $\{{ runner.os }}-yarn-$\{{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            $\{{ runner.os }}-yarn-
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
@@ -30,12 +52,16 @@ jobs:
 
       - run: gcloud auth configure-docker
 
-      - run: docker build --build-arg NPM_TOKEN=$\{{ env.NPM_TOKEN }} . -t $\{{ env.IMAGE_NAME }}:$\{{ env.V_TAG }}
+      - run: docker build --build-arg NPM_TOKEN=$\{{ env.NPM_TOKEN }} . -t $\{{ env.IMAGE_NAME }}:$\{{ steps.version.outputs.VERSION }}
         env:
           NPM_TOKEN: $\{{ secrets.GH_NPM_TOKEN }}
 
-      - run: docker tag $\{{ env.IMAGE_NAME }}:$\{{ env.V_TAG }} $\{{ env.IMAGE_NAME }}:$\{{ env.VERSION }}-dev
-
       - run: docker push $\{{ env.IMAGE_NAME }}
 
-      - run: gcloud run deploy $\{{ env.SERVICE_NAME }}-dev-$\{{ env.VERSION }} --platform managed --image=$\{{ env.IMAGE_NAME }}:$\{{ env.V_TAG }} --region $\{{ env.REGION }}
+      - name: Request version update
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: $\{{ secrets.GH_PRIVATE_TOKEN }}
+          repository: indivorg/infra-core
+          event-type: update_version
+          client-payload: '{"service": "$\{{ env.SERVICE_NAME }}", "new_version": "$\{{ steps.version.outputs.VERSION }}"}'

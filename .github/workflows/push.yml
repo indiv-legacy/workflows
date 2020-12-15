@@ -18,4 +18,4 @@ jobs:
             indivorg/service-journal
             indivorg/service-program
             indivorg/service-task
-          github-token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_PRIVATE_TOKEN }}
