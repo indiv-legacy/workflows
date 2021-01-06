@@ -18,4 +18,5 @@ jobs:
             indivorg/service-journal
             indivorg/service-program
             indivorg/service-task
+            indivorg/service-tenant
           github-token: ${{ secrets.GH_PRIVATE_TOKEN }}
