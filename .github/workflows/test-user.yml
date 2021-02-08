@@ -1,0 +1,16 @@
+on:
+  push:
+    branches: [dockerx]
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: bjerkio/kopier@main
+        with:
+          repos: |
+            indivorg/service-user
+          github-token: ${{ secrets.GH_PRIVATE_TOKEN }}
