@@ -1,5 +1,6 @@
 name: Canary Release
 on:
+  pull_request:
   push:
     branches:
       - develop
@@ -70,6 +71,7 @@ jobs:
             NPM_TOKEN=$\{{ secrets.GH_NPM_TOKEN }}
 
       - name: Request version update
+        if: github.event_name != 'pull_request'
         uses: peter-evans/repository-dispatch@v1
         with:
           token: $\{{ secrets.GH_PRIVATE_TOKEN }}
