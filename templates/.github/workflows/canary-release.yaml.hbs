@@ -26,7 +26,10 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v1
         with:
           images: eu.gcr.io/indiv-app-dev/{{github.name}}
-          tag-custom: v-$\{{ steps.projectinfo.outputs.VERSION }}
+          tag-custom: v$\{{ steps.projectinfo.outputs.VERSION }}
+          tag-sha: true
+      
+      - run: echo $\{{ steps.docker_meta.outputs.version }}
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
