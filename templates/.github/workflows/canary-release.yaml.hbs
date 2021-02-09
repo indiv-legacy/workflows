@@ -27,7 +27,7 @@ jobs:
           version: $\{{ steps.projectinfo.outputs.VERSION }}
 
       - name: Set the CUSTOM_TAG
-        id: CUSTOM_TAG
+        id: custom-tag
         run: echo ::set-output name=CUSTOM_TAG::$\{{ steps.semver.outputs.major }}.$\{{ steps.semver.outputs.minor }}.$\{{ steps.semver.outputs.patch }}-canary.$(git rev-parse --short=4 $\{{ github.sha }})
         shell: bash
       
@@ -36,10 +36,10 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v1
         with:
           images: eu.gcr.io/indiv-app-dev/{{github.name}}
-          tag-custom: $\{{ steps.version.outputs.CUSTOM_TAG }}
+          tag-custom: $\{{ steps.custom-tag.outputs.CUSTOM_TAG }}
           tag-sha: true
       
-      - run: echo $\{{ steps.version.outputs.CUSTOM_TAG }}
+      - run: echo $\{{ steps.custom-tag.outputs.CUSTOM_TAG }}
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
