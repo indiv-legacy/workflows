@@ -21,12 +21,22 @@ jobs:
         id: projectinfo
         uses: gregoranders/nodejs-project-info@v0.0.11
       
+      - uses: apexskier/github-semver-parse@v1
+        id: semver
+        with:
+          version: $\{{ steps.projectinfo.outputs.VERSION }}
+
+      - name: Set the CUSTOM_TAG
+        id: CUSTOM_TAG
+        run: echo ::set-output name=CUSTOM_TAG::$\{{ steps.semver.outputs.major }}.$\{{ steps.semver.outputs.minor }}.$\{{ steps.semver.outputs.patch }}-canary.$(git rev-parse --short=4 $\{{ github.sha }})
+        shell: bash
+      
       - name: Docker meta
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
           images: eu.gcr.io/indiv-app-dev/{{github.name}}
-          tag-custom: v$\{{ steps.projectinfo.outputs.VERSION }}
+          tag-custom: $\{{ steps.version.outputs.CUSTOM_TAG }}
           tag-sha: true
       
       - run: echo $\{{ steps.docker_meta.outputs.version }}
@@ -80,4 +90,4 @@ jobs:
           token: $\{{ secrets.GH_PRIVATE_TOKEN }}
           repository: indivorg/infra-core
           event-type: update_version
-          client-payload: '{"service": "$\{{ env.SERVICE_NAME }}", "new_version": "$\{{ steps.docker_meta.outputs.version }}"}'
+          client-payload: '{"service": "$\{{ env.SERVICE_NAME }}", "new_version": "$\{{ steps.version.outputs.CUSTOM_TAG }}"}'
