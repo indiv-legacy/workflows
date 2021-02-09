@@ -59,9 +59,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
-          key: $\{{ runner.os }}-buildx-$\{{ matrix.service }}-$\{{ github.sha }}
+          key: $\{{ runner.os }}-buildx-$\{{ github.sha }}
           restore-keys: |
-            $\{{ runner.os }}-buildx-$\{{ matrix.service }}-
+            $\{{ runner.os }}-buildx-
 
       - name: Build and push
         uses: docker/build-push-action@v2
@@ -80,4 +80,4 @@ jobs:
           token: $\{{ secrets.GH_PRIVATE_TOKEN }}
           repository: indivorg/infra-core
           event-type: update_version
-          client-payload: '{"service": "$\{{ env.SERVICE_NAME }}", "new_version": "$\{{ steps.version.outputs.VERSION }}"}'
+          client-payload: '{"service": "$\{{ env.SERVICE_NAME }}", "new_version": "$\{{ steps.docker_meta.outputs.version }}"}'
