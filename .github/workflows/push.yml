@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: bjerkio/kopier@main
+      - uses: bjerkio/kopier@v1
         with:
           repos: |
             indivorg/service-user
