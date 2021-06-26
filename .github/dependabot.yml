@@ -1,0 +1,33 @@
+version: 2
+updates:
+  - package-ecosystem: "docker"
+    directory: "/templates/service"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "impact/no-changelog-required"
+      - "github_actions"
+      - "dependencies"
+  - package-ecosystem: "github-actions"
+    directory: "/templates/service"
+    schedule:
+      interval: "daily"
+    labels:
+      - "impact/no-changelog-required"
+      - "github_actions"
+      - "dependencies"
+      - "templates/service"
+  - package-ecosystem: "github-actions"
+    directory: "/templates/infra"
+    schedule:
+      interval: "daily"
+    labels:
+      - "impact/no-changelog-required"
+      - "github_actions"
+      - "dependencies"
+      - "templates/infra"
+    

@@ -1,24 +1,16 @@
 on:
-  push:
-    branches: [main]
+  release:
+    types:
+      - "published"
 
 jobs:
   push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: bjerkio/kopier@main
         with:
-          fetch-depth: 0
-      - uses: bjerkio/kopier@v1
-        with:
-          repos: |
-            indivorg/service-user
-            indivorg/service-plan
-            indivorg/service-bff
-            indivorg/service-journal
-            indivorg/service-program
-            indivorg/service-task
-            indivorg/service-tenant
-            indivorg/service-contract
-            indivorg/service-notification
-          github-token: ${{ secrets.GH_PRIVATE_TOKEN }}
+          query: org:indivorg topic:service
+          base-path: templates/service/
+          token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
+          title: "chore(workflow): Bump to ${{ github.event.release.tag_name }}"
