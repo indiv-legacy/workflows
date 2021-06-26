@@ -4,10 +4,9 @@ updates:
     directory: "/templates/service"
     schedule:
       interval: "daily"
-    allow:
+    ignore:
       - dependency-name: "node"
-        dependency-type: "direct"
-        versions: ["14.x.x-alpine"]
+        versions: ["15.x.x-alpine", "16.x.x-alpine"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
