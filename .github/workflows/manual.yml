@@ -1,0 +1,21 @@
+on:
+  workflow_dispatch:
+    inputs:
+      query:
+        default: org:indivorg topic:service
+        description: Github Search for which repos will get this manual deployment.
+        required: true
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: FranzDiebold/github-env-vars-action@v2
+      - uses: bjerkio/kopier@main
+        with:
+          query: ${{ github.event.inputs.query }}
+          base-path: templates/service/
+          token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
+          title: "chore(workflow): Manual deploy from ${{ env.CI_ACTOR }}"
+          head: kopier-${{ env.CI_REF_NAME_SLUG }}-${{ env.CI_SHA_SHORT }}
