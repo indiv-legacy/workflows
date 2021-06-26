@@ -6,6 +6,7 @@ updates:
       interval: "daily"
     allow:
       - dependency-name: "node"
+        dependency-type: "direct"
         versions: ["14.x.x-alpine"]
   - package-ecosystem: "github-actions"
     directory: "/"
