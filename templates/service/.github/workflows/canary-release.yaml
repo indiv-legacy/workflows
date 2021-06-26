@@ -9,9 +9,6 @@ jobs:
   up:
     name: Deploy to GCP
     runs-on: ubuntu-latest
-    env:
-      SERVICE_NAME: ${{ github.repository.name }}
-      IMAGE_NAME: eu.gcr.io/indiv-app/${{ github.repository.name }}
     steps:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
@@ -28,7 +25,10 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.IMAGE_NAME }}
+          images: eu.gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}
+          tags: |
+            type=sha,prefix={{branch}}-,priority=1000
+            type=ref,event=branch
 
       - name: Cache Docker layers
         uses: actions/cache@v2.1.6
@@ -60,4 +60,4 @@ jobs:
           token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
           repository: indivorg/infra-core
           event-type: update_version
-          client-payload: '{"service": "${{ env.SERVICE_NAME }}", "new_version": "${{ steps.meta.outputs.version }}"}'
+          client-payload: '{"service": "${{ github.event.repository.name }}", "new_version": "${{ steps.meta.outputs.version }}"}'
