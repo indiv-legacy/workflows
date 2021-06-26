@@ -14,3 +14,4 @@ jobs:
           base-path: templates/service/
           token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
           title: "chore(workflow): Bump to ${{ github.event.release.tag_name }}"
+          head: kopier-${{ github.event.release.tag_name }}
