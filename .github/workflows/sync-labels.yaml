@@ -1,0 +1,27 @@
+name: Sync labels
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - labels.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/github-script@v4
+        id: search
+        with:
+          result-encoding: string
+          script: |
+            const { data: { items } } = await octokit.rest.search.repos({
+              q: 'user:indivorg'
+            });
+            return items.map(i => i.full_name).join('\n');
+      - uses: micnncim/action-label-syncer@v1
+        with:
+          manifest: labels.yml
+          repository: ${{ steps.search.outputs.items }}
+          token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
