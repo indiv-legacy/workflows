@@ -1,0 +1,20 @@
+name: Push to monorepo-services
+on:
+  release:
+    paths:
+      - templates/monorepo-service
+    types:
+      - published
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bjerkio/kopier@main
+        with:
+          query: org:indivorg topic:monorepo-service
+          base-path: templates/monorepo-service/
+          token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
+          title: "chore(workflow): Bump to ${{ github.event.release.tag_name }}"
+          head: kopier-${{ github.event.release.tag_name }}

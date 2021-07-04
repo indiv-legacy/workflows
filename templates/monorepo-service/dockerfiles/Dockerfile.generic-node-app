@@ -1,0 +1,37 @@
+FROM node:14-alpine as build
+
+ARG PACKAGE_NAME
+ARG NPM_TOKEN
+
+WORKDIR /usr/src/app
+
+COPY package.json yarn.lock .yarnrc.yml tsconfig.node.json ./
+COPY .yarn ./.yarn
+COPY packages ./packages
+
+RUN \
+  if [[ -z "$PACKAGE_NAME" ]] ; \
+  then echo "PACKAGE_NAME argument not provided" && false ; \
+  else echo "Dockerfile.generic configured for $PACKAGE_NAME" ; \
+  fi
+
+WORKDIR /usr/src/app/packages/$PACKAGE_NAME
+
+RUN yarn config set 'npmScopes["indivorg"].npmAuthToken' $NPM_TOKEN
+RUN yarn config set enableGlobalCache false
+RUN yarn workspaces focus $PACKAGE_NAME
+RUN yarn build
+RUN yarn workspaces focus --production $PACKAGE_NAME
+RUN yarn cache clean
+RUN rm -f .npmrc
+
+FROM node:14-alpine
+
+ARG PACKAGE_NAME
+
+COPY --from=build /usr/src/app /usr/src/app
+
+WORKDIR /usr/src/app/packages/$PACKAGE_NAME
+
+CMD ["yarn", "start"]
+

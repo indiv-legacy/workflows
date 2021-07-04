@@ -1,8 +1,10 @@
-name: Release
+name: Push to services
 on:
   release:
+    paths:
+      - templates/service
     types:
-      - "published"
+      - published
 
 jobs:
   push:
