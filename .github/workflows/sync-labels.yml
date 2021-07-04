@@ -21,8 +21,9 @@ jobs:
               q: 'user:indivorg'
             });
             return items.map(i => i.full_name).join('\n');
+      - run: echo ${{ steps.search.outputs.result }}
       - uses: micnncim/action-label-syncer@v1
         with:
           manifest: labels.yml
-          repository: ${{steps.set-result.outputs.result}}
+          repository: ${{ steps.search.outputs.result }}
           token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
