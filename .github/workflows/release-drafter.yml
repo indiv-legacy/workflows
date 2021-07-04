@@ -1,0 +1,22 @@
+name: Release Drafter
+on:
+  push:
+    branches:
+      - main
+jobs:
+  release:
+    name: Release Drafter
+    runs-on: ubuntu-latest
+    concurrency: pulumi
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
+        with:
+          version: ${{ steps.date.outputs.date }}
