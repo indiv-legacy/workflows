@@ -1,13 +1,14 @@
-name: Canary Release
+name: Release
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
       - master
 
 jobs:
-  up:
-    name: Deploy to GCP
+  release:
+    name: Release
     runs-on: ubuntu-latest
     steps:
       - name: Set up Cloud SDK
@@ -25,10 +26,10 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: eu.gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}
+          images:
+            eu.gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}
           tags: |
-            type=sha,prefix={{branch}}-,priority=1000
-            type=ref,event=branch
+            type=sha,prefix={{branch}}-
 
       - name: Cache Docker layers
         uses: actions/cache@v2.1.6
@@ -60,6 +61,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
-          repository: indivorg/infra-core
+          repository: indivorg/infra-app
           event-type: update_version
           client-payload: '{"service": "${{ github.event.repository.name }}", "new_version": "${{ steps.meta.outputs.version }}"}'
