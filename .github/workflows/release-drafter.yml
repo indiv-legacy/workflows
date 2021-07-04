@@ -15,9 +15,18 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-      - uses: release-drafter/release-drafter@v5
+      - name: Conventional Changelog Action
+        uses: TriPSs/conventional-changelog-action@v3
+        with:
+          github-token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
+          output-file: "false"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        # if: ${{ steps.changelog.outputs.skipped == 'false' }}
         env:
           GITHUB_TOKEN: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
         with:
-          version: ${{ steps.date.outputs.date }}
-          tag: ${{ steps.date.outputs.date }}
+          draft: true
+          tag_name: ${{ steps.date.outputs.date }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
