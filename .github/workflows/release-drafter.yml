@@ -20,3 +20,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
         with:
           version: ${{ steps.date.outputs.date }}
+          tag: ${{ steps.date.outputs.date }}
