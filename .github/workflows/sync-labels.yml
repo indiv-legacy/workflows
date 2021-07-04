@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - labels.yml
+      - .github/workflows/sync-labels.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,12 +17,12 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const { data: { items } } = await octokit.rest.search.repos({
+            const { data: { items } } = await github.search.repos({
               q: 'user:indivorg'
             });
             return items.map(i => i.full_name).join('\n');
       - uses: micnncim/action-label-syncer@v1
         with:
           manifest: labels.yml
-          repository: ${{ steps.search.outputs.items }}
+          repository: ${{steps.set-result.outputs.result}}
           token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
