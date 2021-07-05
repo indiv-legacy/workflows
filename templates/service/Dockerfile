@@ -6,11 +6,7 @@ ARG NPM_TOKEN
 
 COPY package*.json yarn.lock ./
 
-RUN echo "@indivorg:registry=https://npm.pkg.github.com" > .npmrc
-RUN echo "//npm.pkg.github.com/:_authToken=$NPM_TOKEN" >> .npmrc
-
 RUN yarn install
-RUN rm -f .npmrc
 
 COPY . .
 
