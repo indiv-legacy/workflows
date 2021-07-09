@@ -5,7 +5,7 @@ updates:
     reviewers:
       - indivorg/developers
     schedule:
-      interval: "daily"
+      interval: "weekly"
     ignore:
       - dependency-name: "typescript*"
       - dependency-name: "@types/node"
