@@ -12,7 +12,7 @@ COPY . .
 
 RUN yarn build
 
-FROM node:14.10.0-alpine
+FROM node:14.17.3-alpine
 
 WORKDIR /usr/src/app
 
