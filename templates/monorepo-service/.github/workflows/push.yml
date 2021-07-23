@@ -35,7 +35,7 @@ jobs:
         working-directory: packages/web
         run: |
           yarn build
-          yarn test --passWithNoTests
+          yarn test
 
       - name: Deploying 🚀
         uses: FirebaseExtended/action-hosting-deploy@v0
