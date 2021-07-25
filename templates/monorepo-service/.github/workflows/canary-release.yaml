@@ -13,6 +13,7 @@ jobs:
   up:
     name: Deploy to GCP
     runs-on: ubuntu-latest
+    concurrency: canary-release
     env:
       SERVICE_NAME: 'service-backoffice'
     steps:

@@ -10,6 +10,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    concurrency: canary-release
     steps:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
