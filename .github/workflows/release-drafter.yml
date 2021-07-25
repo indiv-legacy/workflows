@@ -20,9 +20,9 @@ jobs:
         uses: TriPSs/conventional-changelog-action@v3
         with:
           github-token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
-          output-file: "false"
-          skip-commit: "true"
-          skip-version-file: "true"
+          output-file: 'false'
+          skip-commit: 'true'
+          skip-version-file: 'true'
 
       - name: Create Release
         uses: softprops/action-gh-release@v1

@@ -69,4 +69,6 @@ jobs:
           token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
           repository: indivorg/infra-app
           event-type: update_version
-          client-payload: '{"service": "${{ env.SERVICE_NAME }}", "new_version": "${{ steps.meta.outputs.version }}"}'
+          client-payload:
+            '{"service": "${{ env.SERVICE_NAME }}", "new_version": "${{
+            steps.meta.outputs.version }}"}'

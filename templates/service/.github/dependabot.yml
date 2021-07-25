@@ -1,17 +1,16 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     reviewers:
       - indivorg/developers
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     ignore:
-      - dependency-name: "typescript*"
-      - dependency-name: "@types/node"
-        versions: ["15.x"]
+      - dependency-name: 'typescript*'
+      - dependency-name: '@types/node'
+        versions: ['15.x']
     labels:
       - impact/no-changelog-required
       - dependencies/javascript
       - kind/dependencies
-    

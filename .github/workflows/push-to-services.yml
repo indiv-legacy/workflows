@@ -16,5 +16,5 @@ jobs:
           query: org:indivorg topic:service
           base-path: templates/service/
           token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
-          title: "chore(workflow): Bump to ${{ github.event.release.tag_name }}"
+          title: 'chore(workflow): Bump to ${{ github.event.release.tag_name }}'
           head: kopier-${{ github.event.release.tag_name }}
