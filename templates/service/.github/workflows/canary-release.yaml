@@ -27,7 +27,8 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images:
-            eu.gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}
+            eu.gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/${{
+            github.event.repository.name }}
           tags: |
             type=sha,prefix={{branch}}-
 
@@ -63,4 +64,6 @@ jobs:
           token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
           repository: indivorg/infra-app
           event-type: update_version
-          client-payload: '{"service": "${{ github.event.repository.name }}", "new_version": "${{ steps.meta.outputs.version }}"}'
+          client-payload:
+            '{"service": "${{ github.event.repository.name }}", "new_version":
+            "${{ steps.meta.outputs.version }}"}'

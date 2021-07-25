@@ -1,45 +1,44 @@
 version: 2
 updates:
-  - package-ecosystem: "docker"
-    directory: "/templates/service"
+  - package-ecosystem: 'docker'
+    directory: '/templates/service'
     schedule:
-      interval: "daily"
+      interval: 'daily'
     ignore:
-      - dependency-name: "node"
-        versions: ["15.x.x-alpine", "16.x.x-alpine"]
-  - package-ecosystem: "github-actions"
-    directory: "/"
+      - dependency-name: 'node'
+        versions: ['15.x.x-alpine', '16.x.x-alpine']
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "daily"
+      interval: 'daily'
     labels:
-      - "impact/no-changelog-required"
-      - "github_actions"
-      - "dependencies"
-  - package-ecosystem: "github-actions"
-    directory: "/templates/service"
+      - 'impact/no-changelog-required'
+      - 'github_actions'
+      - 'dependencies'
+  - package-ecosystem: 'github-actions'
+    directory: '/templates/service'
     schedule:
-      interval: "daily"
+      interval: 'daily'
     labels:
-      - "impact/no-changelog-required"
-      - "github_actions"
-      - "dependencies"
-      - "templates/service"
-  - package-ecosystem: "github-actions"
-    directory: "/templates/monorepo-service"
+      - 'impact/no-changelog-required'
+      - 'github_actions'
+      - 'dependencies'
+      - 'templates/service'
+  - package-ecosystem: 'github-actions'
+    directory: '/templates/monorepo-service'
     schedule:
-      interval: "daily"
+      interval: 'daily'
     labels:
-      - "impact/no-changelog-required"
-      - "github_actions"
-      - "dependencies"
-      - "templates/service"
-  - package-ecosystem: "github-actions"
-    directory: "/templates/infra"
+      - 'impact/no-changelog-required'
+      - 'github_actions'
+      - 'dependencies'
+      - 'templates/service'
+  - package-ecosystem: 'github-actions'
+    directory: '/templates/infra'
     schedule:
-      interval: "daily"
+      interval: 'daily'
     labels:
-      - "impact/no-changelog-required"
-      - "github_actions"
-      - "dependencies"
-      - "templates/infra"
-    
+      - 'impact/no-changelog-required'
+      - 'github_actions'
+      - 'dependencies'
+      - 'templates/infra'

@@ -1,6 +1,7 @@
 # Indiv Github Workflows
 
-This repository is a _one-stop-shop_ for the CI/CD process for most Indiv repositories.
+This repository is a _one-stop-shop_ for the CI/CD process for most Indiv
+repositories.
 
 ## Update workflow files
 
