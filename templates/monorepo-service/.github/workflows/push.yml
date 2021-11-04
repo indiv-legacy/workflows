@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Start Deployment
-        uses: bobheadxi/deployments@v0.6.0
+        uses: bobheadxi/deployments@v0.6.1
         id: deployment
         with:
           step: start
@@ -21,7 +21,7 @@ jobs:
           env: production
 
       - name: Checkout 🛎️
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.4.0
 
       - uses: actions/setup-node@v2
         with:
@@ -50,7 +50,7 @@ jobs:
           FIREBASE_CLI_PREVIEWS: hostingchannels
 
       - name: Update Deployment Status
-        uses: bobheadxi/deployments@v0.6.0
+        uses: bobheadxi/deployments@v0.6.1
         if: always()
         with:
           step: finish

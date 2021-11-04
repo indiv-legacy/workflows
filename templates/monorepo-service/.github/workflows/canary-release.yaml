@@ -26,7 +26,7 @@ jobs:
 
       - run: gcloud auth configure-docker
 
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v2.4.0
 
       - name: Docker meta
         id: meta
