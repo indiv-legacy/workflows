@@ -1,4 +1,4 @@
-FROM node:14.17.3-alpine as build
+FROM node:16.13.0-alpine as build
 
 ARG PACKAGE_NAME
 ARG NPM_TOKEN
@@ -25,7 +25,7 @@ RUN yarn build
 RUN yarn workspaces focus --production $PACKAGE_NAME
 RUN yarn cache clean
 
-FROM node:14.17.3-alpine
+FROM node:16.13.0-alpine
 
 ARG PACKAGE_NAME
 
