@@ -18,7 +18,7 @@ jobs:
           result-encoding: string
           github-token: ${{ secrets.INDIVBOT_GITHUB_TOKEN }}
           script: |
-            const { data: { items } } = await github.search({
+            const { data: { items } } = await github.rest.search.repos({
               q: 'user:indivorg'
             });
             return items.map(i => i.full_name).join('\n');
