@@ -7,6 +7,9 @@
 - name: blocked
   description: Work can't continue
   color: b60205
+- name: backlog
+  description: Not actively being worked on
+  color: ecc6ff
 - name: emergent
   description: Coming into being
   color: ecc6ff
