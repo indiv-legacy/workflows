@@ -12,41 +12,29 @@ jobs:
     runs-on: ubuntu-latest
     concurrency: canary-release
     steps:
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@master
+      - uses: actions/checkout@v2
+
+      - name: Authenticate with Google Cloud Platform
+        uses: google-github-actions/auth@v0
         with:
-          project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
-          service_account_key: ${{ secrets.GOOGLE_PROJECT_SA_KEY }}
-          export_default_credentials: true
+          credentials_json: ${{ secrets.GOOGLE_PROJECT_SA_KEY }}
 
       - run: gcloud auth configure-docker
-
-      - uses: actions/checkout@v2.4.0
 
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images:
-            eu.gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/${{
+          images: eu.gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/${{
             github.event.repository.name }}
           tags: |
             type=sha,prefix={{branch}}-
-
-      - name: Cache Docker layers
-        uses: actions/cache@v2.1.6
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
 
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
 
       - name: Build and push
-        id: docker_build
         uses: docker/build-push-action@v2
         with:
           context: ./
@@ -54,8 +42,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           build-args: |
             NPM_TOKEN=${{ secrets.INDIVBOT_GITHUB_TOKEN }}
 
