@@ -39,7 +39,7 @@ jobs:
           images: eu.gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/${{
             github.event.repository.name }}
           tags: |
-            type=sha,prefix={{branch}}-
+            type=sha,prefix=${{ github.head_ref }}-
 
       - name: Set up Docker Buildx
         id: buildx
