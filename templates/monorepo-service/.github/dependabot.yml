@@ -2,10 +2,8 @@ version: 2
 updates:
   - package-ecosystem: 'npm'
     directory: '/'
-    reviewers:
-      - indivorg/developers
     schedule:
-      interval: 'daily'
+      interval: 'weekly'
     ignore:
       - dependency-name: 'typescript*'
       - dependency-name: '@types/node'
