@@ -2,8 +2,6 @@ version: 2
 updates:
   - package-ecosystem: 'npm'
     directory: '/'
-    reviewers:
-      - indivorg/developers
     schedule:
       interval: 'weekly'
     ignore:
